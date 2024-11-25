@@ -7,3 +7,7 @@ commands:
   du:
     description: donationUtil 플러그인 명령어
     usage: /<command> [arguments]
+  보호권:
+    description: 인벤 보호권 확인 명령어
+    usage: /<command> [player]
+    aliases: invp

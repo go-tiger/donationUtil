@@ -213,4 +213,6 @@ public class DuService {
         sender.sendMessage(ChatColor.GREEN + target.getName() + "이(가) " + randomPlayer.getName() + "에게 텔레포트되었습니다.");
         target.sendMessage(ChatColor.AQUA + "당신은 " + randomPlayer.getName() + "에게 텔레포트되었습니다.");
     }
+
+
 }
