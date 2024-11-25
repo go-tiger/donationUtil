@@ -1,0 +1,5 @@
+name: donationUtil
+version: '1.0'
+main: dev.gotiger.donationUtil.DonationUtil
+api-version: '1.16'
+load: STARTUP
