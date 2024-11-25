@@ -3,3 +3,7 @@ version: '1.0'
 main: dev.gotiger.donationUtil.DonationUtil
 api-version: '1.16'
 load: STARTUP
+commands:
+  du:
+    description: donationUtil 플러그인 명령어
+    usage: /<command> [arguments]
