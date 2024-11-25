@@ -2,6 +2,7 @@ package dev.gotiger.donationUtil.command;
 
 import dev.gotiger.donationUtil.config.ConfigManager;
 import dev.gotiger.donationUtil.service.DuService;
+import dev.gotiger.donationUtil.service.ProtectionService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,10 +11,12 @@ import org.bukkit.command.CommandSender;
 public class DuCommand implements CommandExecutor {
     private final ConfigManager configManager;
     private final DuService duService;
+    private final ProtectionService protectionService;
 
-    public DuCommand(ConfigManager configManager, DuService duService) {
+    public DuCommand(ConfigManager configManager, DuService duService, ProtectionService protectionService) {
         this.configManager = configManager;
         this.duService = duService;
+        this.protectionService = protectionService;
     }
 
     @Override
@@ -38,6 +41,9 @@ public class DuCommand implements CommandExecutor {
             case "tp":
                 duService.tpRandomPlayer(sender, args);
                 break;
+
+            case "inven":
+                protectionService.giveInventoryProtection(sender, args);
 
             case "reload":
                 configManager.reloadConfig();

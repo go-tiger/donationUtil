@@ -6,12 +6,11 @@ import dev.gotiger.donationUtil.service.DuService;
 import dev.gotiger.donationUtil.service.ProtectionService;
 
 public class CommandManager {
-    public static void registerCommands(DonationUtil plugin) {
+    public static void registerCommands(DonationUtil plugin, ProtectionService protectionService) {
         ConfigManager configManager = new ConfigManager(plugin);
         DuService duService = new DuService(plugin);
-        ProtectionService protectionService = new ProtectionService(plugin, configManager);
 
-        plugin.getCommand("du").setExecutor(new DuCommand(configManager, duService));
+        plugin.getCommand("du").setExecutor(new DuCommand(configManager, duService, protectionService));
         plugin.getCommand("보호권").setExecutor(new ProtectionCommand(protectionService));
     }
 }
