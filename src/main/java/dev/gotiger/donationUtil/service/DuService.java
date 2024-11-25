@@ -8,9 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DuService {
     private final DonationUtil plugin;
@@ -18,6 +16,7 @@ public class DuService {
         this.plugin = plugin;
     }
     private final Random random = new Random();
+    private final Map<UUID, UUID> lastTeleportedTo = new HashMap<>();
 
     public void giveItem(CommandSender sender, String[] args) {
         if (args.length < 2) {
@@ -169,5 +168,49 @@ public class DuService {
                 sender.sendMessage(ChatColor.RED + "Config에서 잘못된 데미지 타입이 설정되었습니다. (half 또는 정수)");
             }
         }
+    }
+
+    public void tpRandomPlayer(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du tp <플레이어>");
+            return;
+        }
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어를 찾을 수 없습니다.");
+            return;
+        }
+
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        players.remove(target);
+
+        players.removeIf(player -> player.getGameMode() == GameMode.SPECTATOR);
+
+        if (players.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "텔레포트할 다른 플레이어가 없습니다.");
+            return;
+        }
+
+        UUID lastTargetUUID = lastTeleportedTo.get(target.getUniqueId());
+        players.removeIf(player -> player.getUniqueId().equals(lastTargetUUID));
+
+        if (players.isEmpty()) {
+            players = new ArrayList<>(Bukkit.getOnlinePlayers());
+            players.remove(target);
+            players.removeIf(player -> player.getGameMode() == GameMode.SPECTATOR);
+        }
+
+        Player randomPlayer;
+        if (players.size() == 1) {
+            randomPlayer = players.get(0);
+        } else {
+            randomPlayer = players.get(new Random().nextInt(players.size()));
+        }
+
+        target.teleport(randomPlayer.getLocation());
+        lastTeleportedTo.put(target.getUniqueId(), randomPlayer.getUniqueId());
+
+        sender.sendMessage(ChatColor.GREEN + target.getName() + "이(가) " + randomPlayer.getName() + "에게 텔레포트되었습니다.");
+        target.sendMessage(ChatColor.AQUA + "당신은 " + randomPlayer.getName() + "에게 텔레포트되었습니다.");
     }
 }
