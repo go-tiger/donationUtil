@@ -1,0 +1,31 @@
+# 기본
+# ZOMBIE: 좀비, ZOMBIE_VILLAGER: 좀비 주민, DROWNED: 드라운드, HUSK: 허스크
+# SKELETON: 스켈레톤, STRAY: 스트레이, WITHER_SKELETON: 위더 스켈레톤
+# SPIDER: 거미, CREEPER: 크리퍼
+# SLIME: 슬라임, MAGMA_CUBE: 마그마 큐브
+# 레어
+# BLAZE: 블레이즈, CAVE_SPIDER: 동굴 거미, WITCH: 마녀, RAVAGER: 파괴수,
+# 보스
+# WITHER: 위더, ENDER_DRAGON: 엔더 드래곤, WARDEN: 워든
+# 기타
+# VINDICATOR: 변명자, PILLAGER: 약탈자, VEX: 벡스, EVOKER: 소환사
+# SILVERFISH: 좀벌레, PHANTOM: 팬텀
+# ENDERMAN: 엔더맨, ENDERMITE: 엔더미트, ZOGLIN: 조글린, ZOMBIFIED_PIGLIN: 좀비 피글린, GHAST: 가스트, SHULKER: 셜커
+# GUARDIAN: 가디언, ELDER_GUARDIAN: 엘더 가디언
+monster:
+  common:
+    chance: 70
+    list:
+      - ZOMBIE
+      - SPIDER
+      - SKELETON
+  rare:
+    chance: 25
+    list:
+      - BLAZE
+      - CAVE_SPIDER
+  boss:
+    chance: 5
+    list:
+      - WARDEN
+      - WITHER

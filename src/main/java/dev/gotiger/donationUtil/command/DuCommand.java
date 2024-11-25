@@ -21,13 +21,14 @@ public class DuCommand implements CommandExecutor {
         if (args.length < 1) {
             return false;
         }
-        sender.sendMessage("123");
 
         switch (args[0].toLowerCase()) {
             case "item":
-                sender.sendMessage(args);
-                sender.sendMessage("123");
                 duService.giveItem(sender, args);
+                break;
+
+            case "monster":
+                duService.spawnMonsters(sender, args);
                 break;
 
             case "reload":
