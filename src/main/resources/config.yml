@@ -29,3 +29,7 @@ monster:
     list:
       - WARDEN
       - WITHER
+lightning:
+  damage:
+    type: half
+  fire: false

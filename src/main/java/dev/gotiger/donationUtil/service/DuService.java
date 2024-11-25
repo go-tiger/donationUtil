@@ -1,10 +1,7 @@
 package dev.gotiger.donationUtil.service;
 
 import dev.gotiger.donationUtil.DonationUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -116,6 +113,61 @@ public class DuService {
 
             target.getWorld().spawnEntity(target.getLocation(), type);
             sender.sendMessage(ChatColor.GREEN + target.getName() + " 주변에 " + randomMonster + "를 소환했습니다.");
+        }
+    }
+
+    public void strikeLightning(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du lightning <플레이어>");
+            return;
+        }
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어를 찾을 수 없습니다.");
+            return;
+        }
+
+        FileConfiguration config = plugin.getConfig(); // Config 가져오기
+        String damageType = config.getString("lightning.damage.type", "half");
+        boolean fire = config.getBoolean("lightning.fire", true);
+
+        World world = target.getWorld();
+        Location location = target.getLocation();
+
+        // 불이 붙는 설정 여부에 따라 번개 생성
+        if (fire) {
+            world.strikeLightning(location);
+        } else {
+            world.strikeLightningEffect(location);
+        }
+
+        // 데미지 계산
+        double health = target.getHealth();
+        double damage;
+
+        if (damageType.equalsIgnoreCase("half")) {
+            damage = health / 2;
+            if (health <= 4.0) {
+                target.setHealth(0);
+                sender.sendMessage(ChatColor.RED + target.getName() + "는 즉사했습니다.");
+            } else {
+                target.damage(damage);
+                sender.sendMessage(ChatColor.GREEN + target.getName() + "에게 하트의 절반(" + damage + ") 데미지를 입혔습니다.");
+            }
+        } else {
+            try {
+                int flatDamage = Integer.parseInt(damageType);
+                damage = flatDamage;
+                if (health <= damage) {
+                    target.setHealth(0);
+                    sender.sendMessage(ChatColor.RED + target.getName() + "는 즉사했습니다.");
+                } else {
+                    target.damage(damage);
+                    sender.sendMessage(ChatColor.GREEN + target.getName() + "에게 " + damage + " 데미지를 입혔습니다.");
+                }
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + "Config에서 잘못된 데미지 타입이 설정되었습니다. (half 또는 정수)");
+            }
         }
     }
 }
