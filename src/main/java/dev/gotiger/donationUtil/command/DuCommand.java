@@ -7,8 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class DuCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class DuCommand implements CommandExecutor, TabCompleter {
     private final ConfigManager configManager;
     private final DuService duService;
     private final ProtectionService protectionService;
@@ -80,5 +87,24 @@ public class DuCommand implements CommandExecutor {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            List<String> subCommands = Arrays.asList("item", "monster", "lightning", "tp", "inven", "clear", "kill", "lava", "sky", "buff", "debuff", "reload");
+            StringUtil.copyPartialMatches(args[0], subCommands, completions);
+        } else if (args.length == 2) {
+            if (Arrays.asList("item", "monster", "tp", "clear", "kill", "lava", "sky", "buff", "debuff").contains(args[0].toLowerCase())) {
+                List<String> playerNames = new ArrayList<>();
+                for (Player player : sender.getServer().getOnlinePlayers()) {
+                    playerNames.add(player.getName());
+                }
+                StringUtil.copyPartialMatches(args[1], playerNames, completions);
+            }
+        }
+        return completions;
     }
 }
