@@ -29,12 +29,92 @@ monster:
     list:
       - WARDEN
       - WITHER
+
 lightning:
   damage:
     type: half
   fire: false
+
 clear:
   includeOffHand: true     # 기본값 true (왼손 포함)
   includeMainHand: true # 기본값 true (오른손 포함)
   includeAir: false     # 기본값 false (빈 슬롯 포함 여부)
   includeArmor: true    # 기본값 true (장비 포함 여부)
+
+buffs:
+  SPEED: # 신속: 이동속도 증가
+    enabled: true
+    duration: 200  # 지속 시간 (틱 단위)
+    amplifier: 1   # 배율
+  HASTE: # 성급함: 채굴 속도 증가
+    enabled: true
+    duration: 200
+    amplifier: 1
+  JUMP: # 점프강화: 점프 높이 증가
+    enabled: true
+    duration: 200
+    amplifier: 1
+  STRENGTH: # 힘: 공격력 증가
+    enabled: true
+    duration: 200
+    amplifier: 1
+  RESISTANCE: # 저항: 피해 감소
+    enabled: true
+    duration: 200
+    amplifier: 1
+  REGENERATION: # 재생: 일정 시간마다 체력 회복
+    enabled: true
+    duration: 200
+    amplifier: 1
+  FIRE_RESISTANCE: # 화염저항: 화염과 용암으로부터 피해를 입지 않음
+    enabled: true
+    duration: 200
+    amplifier: 1
+  WATER_BREATHING: # 수중호흡: 물속에서 호흡이 가능함
+    enabled: true
+    duration: 200
+    amplifier: 1
+  NIGHT_VISION: # 야간 투시: 어두운 곳에서 시야가 보임
+    enabled: true
+    duration: 200
+    amplifier: 1
+  ABSORPTION: # 흡수: 추가적인 체력 버프
+    enabled: true
+    duration: 200
+    amplifier: 1
+  HEALTH_BOOST: # 체력강화: 최대 체력 증가
+    enabled: true
+    duration: 200
+    amplifier: 1
+  SATURATION: # 포화: 배고픔이 차감되지 않음
+    enabled: true
+    duration: 200
+    amplifier: 1
+  LUCK: # 행운: 긍정적인 확률 효과를 증가시킴
+    enabled: true
+    duration: 200
+    amplifier: 1
+  SLOW_FALLING: # 느린 낙하: 떨어져도 빠르게 죽지 않음
+    enabled: true
+    duration: 200
+    amplifier: 1
+  CONDUIT_POWER: # 전달체의 힘: 공중에 떠오르는 효과
+    enabled: true
+    duration: 200
+    amplifier: 1
+  DOLPHINS_GRACE: # 돌고래의 가호: 수영 속도 증가
+    enabled: true
+    duration: 200
+    amplifier: 1
+  INSTANT_HEALTH: # 즉시 치유: 즉시 체력 회복
+    enabled: true
+    duration: 200
+    amplifier: 1
+  INVISIBILITY: # 투명: 다른 플레이어에게 보이지 않음
+    enabled: true
+    duration: 200
+    amplifier: 1
+  HERO_OF_THE_VILLAGE: # 마을의 영웅: 마을에서 보상을 증가시킴
+    enabled: true
+    duration: 200
+    amplifier: 1

@@ -3,12 +3,14 @@ package dev.gotiger.donationUtil.service;
 import dev.gotiger.donationUtil.DonationUtil;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
@@ -345,5 +347,113 @@ public class DuService {
         target.teleport(location);
         target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
         sender.sendMessage(ChatColor.GREEN + "플레이어 " + args[1] + "을(를) 하늘로 보냈습니다.");
+    }
+
+    public void buffPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du buff <플레이어>");
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection buffsSection = config.getConfigurationSection("buffs");
+        if (buffsSection == null) {
+            sender.sendMessage(ChatColor.RED + "버프 섹션을 찾을 수 없습니다.");
+            return;
+        }
+
+        List<String> availableBuffs = new ArrayList<>();
+        for (String key : buffsSection.getKeys(false)) {
+            ConfigurationSection buffConfig = buffsSection.getConfigurationSection(key);
+            if (buffConfig != null && buffConfig.getBoolean("enabled", false)) {
+                availableBuffs.add(key);
+            }
+        }
+
+        if (availableBuffs.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "활성화된 버프가 없습니다.");
+            return;
+        }
+
+        String randomBuff = availableBuffs.get(new Random().nextInt(availableBuffs.size()));
+
+        plugin.getLogger().info("randomBuff: " + randomBuff);
+
+        int duration = config.getInt("buffs." + randomBuff + ".duration");
+        int amplifier = config.getInt("buffs." + randomBuff + ".amplifier");
+
+        applyBuff(target, randomBuff, duration, amplifier);
+        sender.sendMessage(ChatColor.GREEN + target.getName() + "에게 " + randomBuff + " 버프를 적용했습니다.");
+    }
+
+    private void applyBuff(Player player, String buffName, Integer duration, Integer amplifier) {
+        switch (buffName.toUpperCase()) {
+            case "SPEED":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration, amplifier));
+                break;
+            case "HASTE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, duration, amplifier));
+                break;
+            case "JUMP":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, duration, amplifier));
+                break;
+            case "STRENGTH":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, duration, amplifier));
+                break;
+            case "RESISTANCE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, duration, amplifier));
+                break;
+            case "REGENERATION":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, duration, amplifier));
+                break;
+            case "FIRE_RESISTANCE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, duration, amplifier));
+                break;
+            case "WATER_BREATHING":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, duration, amplifier));
+                break;
+            case "NIGHT_VISION":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, duration, amplifier));
+                break;
+            case "ABSORPTION":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, duration, amplifier));
+                break;
+            case "HEALTH_BOOST":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, duration, amplifier));
+                break;
+            case "SATURATION":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, duration, amplifier));
+                break;
+            case "LUCK":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, duration, amplifier));
+                break;
+            case "SLOW_FALLING":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, duration, amplifier));
+                break;
+            case "CONDUIT_POWER":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, duration, amplifier));
+                break;
+            case "DOLPHINS_GRACE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, duration, amplifier));
+                break;
+            case "INSTANT_HEALTH":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, duration, amplifier));
+                break;
+            case "INVISIBILITY":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, duration, amplifier));
+                break;
+            case "HERO_OF_THE_VILLAGE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, duration, amplifier));
+                break;
+            default:
+                player.sendMessage(ChatColor.RED + "지원하지 않는 버프입니다.");
+                break;
+        }
     }
 }
