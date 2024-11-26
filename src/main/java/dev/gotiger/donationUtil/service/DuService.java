@@ -310,4 +310,21 @@ public class DuService {
         }
         target.setHealth(0);
     }
+
+    public void lavaPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du lava <플레이어>");
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        Location location = target.getLocation();
+        location.getBlock().setType(Material.LAVA);
+        sender.sendMessage(ChatColor.GREEN + "플레이어 " + args[1] + "에게 용암이 소환했습니다.");
+    }
 }
