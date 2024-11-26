@@ -296,4 +296,18 @@ public class DuService {
             target.sendMessage(ChatColor.GREEN + "빈 슬롯이 삭제되었습니다.");
         }
     }
+
+    public void killPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du kill <플레이어>");
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+        target.setHealth(0);
+    }
 }

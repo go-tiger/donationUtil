@@ -50,6 +50,10 @@ public class DuCommand implements CommandExecutor {
                 duService.clearInventoryPlayer(sender, args);
                 break;
 
+            case "kill":
+                duService.killPlayer(sender, args);
+                break;
+
             case "reload":
                 configManager.reloadConfig();
                 sender.sendMessage(ChatColor.GREEN + "설정이 리로드되었습니다.");
