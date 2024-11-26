@@ -34,7 +34,7 @@ lightning:
     type: half
   fire: false
 clear:
-  includeHand: true     # 기본값 true (왼손 포함)
+  includeOffHand: true     # 기본값 true (왼손 포함)
   includeMainHand: true # 기본값 true (오른손 포함)
   includeAir: false     # 기본값 false (빈 슬롯 포함 여부)
   includeArmor: true    # 기본값 true (장비 포함 여부)

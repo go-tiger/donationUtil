@@ -229,7 +229,7 @@ public class DuService {
         }
 
         FileConfiguration config = plugin.getConfig(); // Config 가져오기
-        boolean includeHand = config.getBoolean("clear.includeHand", true);
+        boolean includeOffHand = config.getBoolean("clear.includeOffHand", true);
         boolean includeMainHand = config.getBoolean("clear.includeMainHand", true);
         boolean includeArmor = config.getBoolean("clear.includeArmor", true);
         boolean includeAir = config.getBoolean("clear.includeAir", false);
@@ -238,7 +238,7 @@ public class DuService {
 
         List<Integer> slotsToRemove = new ArrayList<>();
 
-        if (!includeHand) {
+        if (!includeOffHand) {
             slotsToRemove.add(40);
         }
 
