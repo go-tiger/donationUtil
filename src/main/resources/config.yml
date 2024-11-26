@@ -44,77 +44,139 @@ clear:
 buffs:
   SPEED: # 신속: 이동속도 증가
     enabled: true
-    duration: 200  # 지속 시간 (틱 단위)
-    amplifier: 1   # 배율
+    duration: 200  # 지속 시간 (틱 단위) 0초 = 20
+    amplifier: 0   # 배율 1레벨 : 0, 2레벨 : 1
   HASTE: # 성급함: 채굴 속도 증가
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   JUMP: # 점프강화: 점프 높이 증가
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   STRENGTH: # 힘: 공격력 증가
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   RESISTANCE: # 저항: 피해 감소
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   REGENERATION: # 재생: 일정 시간마다 체력 회복
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   FIRE_RESISTANCE: # 화염저항: 화염과 용암으로부터 피해를 입지 않음
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   WATER_BREATHING: # 수중호흡: 물속에서 호흡이 가능함
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   NIGHT_VISION: # 야간 투시: 어두운 곳에서 시야가 보임
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   ABSORPTION: # 흡수: 추가적인 체력 버프
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   HEALTH_BOOST: # 체력강화: 최대 체력 증가
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   SATURATION: # 포화: 배고픔이 차감되지 않음
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   LUCK: # 행운: 긍정적인 확률 효과를 증가시킴
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   SLOW_FALLING: # 느린 낙하: 떨어져도 빠르게 죽지 않음
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   CONDUIT_POWER: # 전달체의 힘: 공중에 떠오르는 효과
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   DOLPHINS_GRACE: # 돌고래의 가호: 수영 속도 증가
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   INSTANT_HEALTH: # 즉시 치유: 즉시 체력 회복
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   INVISIBILITY: # 투명: 다른 플레이어에게 보이지 않음
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
   HERO_OF_THE_VILLAGE: # 마을의 영웅: 마을에서 보상을 증가시킴
     enabled: true
     duration: 200
-    amplifier: 1
+    amplifier: 0
+
+debuffs:
+  SLOWNESS: # 속도감소: 이동 속도 감소
+    enabled: true
+    duration: 200
+    amplifier: 0
+  MINING_FATIGUE: # 채굴피로: 채굴 속도 감소
+    enabled: true
+    duration: 200
+    amplifier: 0
+  NAUSEA: # 멀미: 화면이 흐려지고 떨림
+    enabled: true
+    duration: 200
+    amplifier: 0
+  BLINDNESS: # 실명: 시야가 완전히 차단됨
+    enabled: true
+    duration: 200
+    amplifier: 0
+  HUNGER: # 허기: 허기 상태가 계속 증가
+    enabled: true
+    duration: 200
+    amplifier: 0
+  WEAKNESS: # 나약함: 공격력 감소
+    enabled: true
+    duration: 200
+    amplifier: 0
+  POISON: # 독: 시간이 지나면 체력이 감소
+    enabled: true
+    duration: 200
+    amplifier: 0
+  WITHER: # 위더: 체력이 계속 감소하며 죽음에 가까워짐
+    enabled: true
+    duration: 200
+    amplifier: 0
+  BAD_LUCK: # 불운: 불운 효과로 아이템 드롭 확률 감소
+    enabled: true
+    duration: 200
+    amplifier: 0
+  DAMAGE_RESISTANCE: # 즉시피해: 즉시 피해를 받음
+    enabled: true
+    duration: 200
+    amplifier: 0
+  GLOWING: # 발광: 주위에서 발광 효과를 줌
+    enabled: true
+    duration: 200
+    amplifier: 0
+  LEVITATION: # 공중 부양: 공중으로 떠오름
+    enabled: true
+    duration: 200
+    amplifier: 0
+  WEAVING: # 방적: 아이템 착용 시 해제 불가
+    enabled: true
+    duration: 200
+    amplifier: 0
+  OOZING: # 점액화: 캐릭터가 점액화되며 느리게 이동
+    enabled: true
+    duration: 200
+    amplifier: 0
+  INFESTED: # 벌레먹음: 방어력이 감소하거나 입는 피해가 증가
+    enabled: true
+    duration: 200
+    amplifier: 0

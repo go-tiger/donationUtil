@@ -66,6 +66,10 @@ public class DuCommand implements CommandExecutor {
                 duService.buffPlayer(sender, args);
                 break;
 
+            case "debuff":
+                duService.debuffPlayer(sender, args);
+                break;
+
             case "reload":
                 configManager.reloadConfig();
                 sender.sendMessage(ChatColor.GREEN + "설정이 리로드되었습니다.");

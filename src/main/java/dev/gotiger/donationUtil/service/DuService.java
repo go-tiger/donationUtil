@@ -392,6 +392,49 @@ public class DuService {
         sender.sendMessage(ChatColor.GREEN + target.getName() + "에게 " + randomBuff + " 버프를 적용했습니다.");
     }
 
+    public void debuffPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du debuff <플레이어>");
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection debuffsSection = config.getConfigurationSection("debuffs");
+        if (debuffsSection == null) {
+            sender.sendMessage(ChatColor.RED + "디버프 섹션을 찾을 수 없습니다.");
+            return;
+        }
+
+        List<String> availableDeuffs = new ArrayList<>();
+        for (String key : debuffsSection.getKeys(false)) {
+            ConfigurationSection buffConfig = debuffsSection.getConfigurationSection(key);
+            if (buffConfig != null && buffConfig.getBoolean("enabled", false)) {
+                availableDeuffs.add(key);
+            }
+        }
+
+        if (availableDeuffs.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "활성화된 디버프가 없습니다.");
+            return;
+        }
+
+        String randomBuff = availableDeuffs.get(new Random().nextInt(availableDeuffs.size()));
+
+        plugin.getLogger().info("randomDebuff: " + randomBuff);
+
+        int duration = config.getInt("debuffs." + randomBuff + ".duration");
+        int amplifier = config.getInt("debuffs." + randomBuff + ".amplifier");
+
+        applyDebuff(target, randomBuff, duration, amplifier);
+        sender.sendMessage(ChatColor.GREEN + target.getName() + "에게 " + randomBuff + " 디버프를 적용했습니다.");
+    }
+
     private void applyBuff(Player player, String buffName, Integer duration, Integer amplifier) {
         switch (buffName.toUpperCase()) {
             case "SPEED":
@@ -453,6 +496,59 @@ public class DuService {
                 break;
             default:
                 player.sendMessage(ChatColor.RED + "지원하지 않는 버프입니다.");
+                break;
+        }
+    }
+
+    public void applyDebuff(Player player, String debuffName, Integer duration, Integer amplifier) {
+        switch (debuffName.toUpperCase()) {
+            case "SLOWNESS":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, duration, amplifier));
+                break;
+            case "MINING_FATIGUE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.MINING_FATIGUE, duration, amplifier));
+                break;
+            case "NAUSEA":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, duration, amplifier));
+                break;
+            case "BLINDNESS":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration, amplifier));
+                break;
+            case "HUNGER":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, duration, amplifier));
+                break;
+            case "WEAKNESS":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, duration, amplifier));
+                break;
+            case "POISON":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier));
+                break;
+            case "WITHER":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, duration, amplifier));
+                break;
+            case "BAD_LUCK":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.UNLUCK, duration, amplifier));
+                break;
+            case "DAMAGE_RESISTANCE":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_DAMAGE, duration, amplifier));
+                break;
+            case "GLOWING":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, amplifier));
+                break;
+            case "LEVITATION":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, duration, amplifier));
+                break;
+            case "WEAVING":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAVING, duration, amplifier));
+                break;
+            case "OOZING":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.OOZING, duration, amplifier));
+                break;
+            case "INFESTED":
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INFESTED, duration, amplifier));
+                break;
+            default:
+                player.sendMessage(ChatColor.RED + "지원하지 않는 디버프입니다.");
                 break;
         }
     }
