@@ -327,4 +327,23 @@ public class DuService {
         location.getBlock().setType(Material.LAVA);
         sender.sendMessage(ChatColor.GREEN + "플레이어 " + args[1] + "에게 용암이 소환했습니다.");
     }
+
+    public void skyPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du sky <플레이어>");
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        Location location = target.getLocation();
+        location.setY(50);
+        target.teleport(location);
+        target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+        sender.sendMessage(ChatColor.GREEN + "플레이어 " + args[1] + "을(를) 하늘로 보냈습니다.");
+    }
 }
