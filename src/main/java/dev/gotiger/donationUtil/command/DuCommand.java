@@ -44,6 +44,11 @@ public class DuCommand implements CommandExecutor {
 
             case "inven":
                 protectionService.giveInventoryProtection(sender, args);
+                break;
+
+            case "clear":
+                duService.clearInventoryPlayer(sender, args);
+                break;
 
             case "reload":
                 configManager.reloadConfig();

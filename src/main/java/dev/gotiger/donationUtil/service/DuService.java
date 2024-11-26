@@ -6,7 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
 
@@ -214,5 +216,84 @@ public class DuService {
         target.sendMessage(ChatColor.AQUA + "당신은 " + randomPlayer.getName() + "에게 텔레포트되었습니다.");
     }
 
+    public void clearInventoryPlayer(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED + "사용법: /du clear <플레이어>");
+            return;
+        }
 
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null) {
+            sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        FileConfiguration config = plugin.getConfig(); // Config 가져오기
+        boolean includeHand = config.getBoolean("clear.includeHand", true);
+        boolean includeMainHand = config.getBoolean("clear.includeMainHand", true);
+        boolean includeArmor = config.getBoolean("clear.includeArmor", true);
+        boolean includeAir = config.getBoolean("clear.includeAir", false);
+
+        Inventory inventory = target.getInventory();
+
+        List<Integer> slotsToRemove = new ArrayList<>();
+
+        if (!includeHand) {
+            slotsToRemove.add(40);
+        }
+
+        if (!includeMainHand) {
+            ItemStack mainHandItem = target.getInventory().getItemInMainHand();
+            if (mainHandItem != null && mainHandItem.getType() != Material.AIR) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack hotbarItem = target.getInventory().getItem(i);
+                    if (hotbarItem != null && hotbarItem.isSimilar(mainHandItem)) {
+                        slotsToRemove.add(i);
+                    }
+                }
+            }
+        }
+
+        if (!includeArmor) {
+            for (int i = 36; i <= 39; i++) {
+                slotsToRemove.add(i);
+            }
+        }
+
+        if (includeAir) {
+            for (int i = 0; i < 45; i++) {
+                ItemStack item = inventory.getItem(i);
+                if (item == null || item.getType() == Material.AIR) {
+                    slotsToRemove.add(i);
+                }
+            }
+        }
+
+        List<Integer> slotsToCheck = new ArrayList<>();
+        for (int i = 0; i < 45; i++) {
+            if (!slotsToRemove.contains(i)) {
+                slotsToCheck.add(i);
+            }
+        }
+
+        Random random = new Random();
+
+        if (!includeAir || slotsToCheck.isEmpty()) {
+            target.sendMessage(ChatColor.RED + "삭제할 아이템이 없습니다.");
+            return;
+        }
+
+        int randomSlot = slotsToCheck.get(random.nextInt(slotsToCheck.size()));
+        plugin.getLogger().info("remove slot number: " + randomSlot);
+
+        ItemStack item = inventory.getItem(randomSlot);
+
+        if (item != null && item.getType() != Material.AIR) {
+            inventory.setItem(randomSlot, null);
+            target.sendMessage(ChatColor.GREEN + "인벤토리에서 랜덤 아이템이 삭제되었습니다.");
+        } else if (item != null && item.getType() == Material.AIR && includeAir) {
+            inventory.setItem(randomSlot, null);
+            target.sendMessage(ChatColor.GREEN + "빈 슬롯이 삭제되었습니다.");
+        }
+    }
 }
