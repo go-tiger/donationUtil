@@ -2,6 +2,7 @@ package dev.gotiger.donationUtil.listener;
 
 import dev.gotiger.donationUtil.DonationUtil;
 import dev.gotiger.donationUtil.service.ProtectionService;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class EventListener implements Listener {
         boolean keepInventory = Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY));
 
         if (keepInventory) {
-            player.sendMessage(ChatColor.RED + "현재 서버 게임룰에 의해 인벤토리가 보호되어 있습니다.");
+            Bukkit.getLogger().warning("현재 서버 게임룰에 의해 인벤토리가 보호되어 있습니다.");
             return;
         }
 
