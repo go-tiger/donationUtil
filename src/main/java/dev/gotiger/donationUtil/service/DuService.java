@@ -326,7 +326,7 @@ public class DuService {
         }
 
         Location location = target.getLocation();
-        location.setY(50);
+        location.setY(location.getY() + 50);
         target.teleport(location);
         target.playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
         sender.sendMessage(ChatColor.GREEN + "플레이어 " + args[1] + "을(를) 하늘로 보냈습니다.");
