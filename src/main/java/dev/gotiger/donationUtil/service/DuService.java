@@ -219,7 +219,7 @@ public class DuService {
     }
 
     public void clearInventoryPlayer(CommandSender sender, String[] args) {
-        if (args.length < 1) {
+        if (args.length < 2) {
             sender.sendMessage(ChatColor.RED + "사용법: /du clear <플레이어>");
             return;
         }
@@ -233,70 +233,54 @@ public class DuService {
         FileConfiguration config = plugin.getConfig(); // Config 가져오기
         boolean includeOffHand = config.getBoolean("clear.includeOffHand", true);
         boolean includeMainHand = config.getBoolean("clear.includeMainHand", true);
-        boolean includeArmor = config.getBoolean("clear.includeArmor", true);
         boolean includeAir = config.getBoolean("clear.includeAir", false);
+        boolean includeArmor = config.getBoolean("clear.includeArmor", true);
 
-        Inventory inventory = target.getInventory();
+        List<Integer> slotsToCheck = new ArrayList<>();
 
-        List<Integer> slotsToRemove = new ArrayList<>();
-
-        if (!includeOffHand) {
-            slotsToRemove.add(40);
+        for (int i = 0; i <= 40; i++) {
+            plugin.getLogger().info("slotsToCheck: "+i);
+            slotsToCheck.add(i);
         }
 
         if (!includeMainHand) {
-            ItemStack mainHandItem = target.getInventory().getItemInMainHand();
-            if (mainHandItem != null && mainHandItem.getType() != Material.AIR) {
-                for (int i = 0; i < 9; i++) {
-                    ItemStack hotbarItem = target.getInventory().getItem(i);
-                    if (hotbarItem != null && hotbarItem.isSimilar(mainHandItem)) {
-                        slotsToRemove.add(i);
-                    }
-                }
-            }
+            int mainHandSlot = target.getInventory().getHeldItemSlot();
+            slotsToCheck.remove(Integer.valueOf(mainHandSlot));
+        }
+
+        if (!includeOffHand) {
+            slotsToCheck.remove(Integer.valueOf(40));
         }
 
         if (!includeArmor) {
             for (int i = 36; i <= 39; i++) {
-                slotsToRemove.add(i);
+                slotsToCheck.remove(Integer.valueOf(i));
             }
         }
 
-        if (includeAir) {
-            for (int i = 0; i < 45; i++) {
-                ItemStack item = inventory.getItem(i);
+        if (!includeAir) {
+            Iterator<Integer> iterator = slotsToCheck.iterator();
+            while (iterator.hasNext()) {
+                int slot = iterator.next();
+                ItemStack item = target.getInventory().getItem(slot);
                 if (item == null || item.getType() == Material.AIR) {
-                    slotsToRemove.add(i);
+                    iterator.remove();
                 }
             }
         }
 
-        List<Integer> slotsToCheck = new ArrayList<>();
-        for (int i = 0; i < 45; i++) {
-            if (!slotsToRemove.contains(i)) {
-                slotsToCheck.add(i);
-            }
-        }
-
-        Random random = new Random();
-
-        if (!includeAir || slotsToCheck.isEmpty()) {
-            target.sendMessage(ChatColor.RED + "삭제할 아이템이 없습니다.");
+        if (slotsToCheck.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "삭제할 아이템이 없습니다.");
             return;
         }
 
+        Random random = new Random();
         int randomSlot = slotsToCheck.get(random.nextInt(slotsToCheck.size()));
-        plugin.getLogger().info("remove slot number: " + randomSlot);
+        plugin.getLogger().info(target.getName() + " will remove slot number: " + randomSlot);
 
-        ItemStack item = inventory.getItem(randomSlot);
+        target.getInventory().setItem(randomSlot, null);
 
-        if (item != null && item.getType() != Material.AIR) {
-            inventory.setItem(randomSlot, null);
-            target.sendMessage(ChatColor.GREEN + "인벤토리에서 랜덤 아이템이 삭제되었습니다.");
-        } else if (item != null && item.getType() == Material.AIR && includeAir) {
-            inventory.setItem(randomSlot, null);
-            target.sendMessage(ChatColor.GREEN + "빈 슬롯이 삭제되었습니다.");
-        }
+        target.sendMessage(ChatColor.GREEN + "인벤토리에서 랜덤 아이템이 삭제되었습니다.");
     }
 
     public void killPlayer(CommandSender sender, String[] args) {
