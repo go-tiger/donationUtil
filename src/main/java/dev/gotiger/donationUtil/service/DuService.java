@@ -220,13 +220,25 @@ public class DuService {
 
     public void clearInventoryPlayer(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.RED + "사용법: /du clear <플레이어>");
+            sender.sendMessage(ChatColor.RED + "사용법: /du clear <플레이어> <횟수>");
             return;
         }
 
         Player target = Bukkit.getPlayer(args[1]);
         if (target == null) {
             sender.sendMessage(ChatColor.RED + "플레이어 " + args[1] + "를 찾을 수 없습니다.");
+            return;
+        }
+
+        int count;
+        try {
+            count = Integer.parseInt(args[2]);
+            if (count <= 0) {
+                sender.sendMessage(ChatColor.RED + "횟수는 1 이상이어야 합니다.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            sender.sendMessage(ChatColor.RED + "횟수는 숫자로 입력해야 합니다.");
             return;
         }
 
@@ -273,11 +285,16 @@ public class DuService {
             return;
         }
 
+        int itemsRemoved = 0;
         Random random = new Random();
-        int randomSlot = slotsToCheck.get(random.nextInt(slotsToCheck.size()));
-        plugin.getLogger().info(target.getName() + " will remove slot number: " + randomSlot);
 
-        target.getInventory().setItem(randomSlot, null);
+        while (itemsRemoved < count && !slotsToCheck.isEmpty()) {
+            int randomSlot = slotsToCheck.get(random.nextInt(slotsToCheck.size()));
+            target.getInventory().setItem(randomSlot, null);
+            itemsRemoved++;
+
+            slotsToCheck.remove(Integer.valueOf(randomSlot));
+        }
 
         target.sendMessage(ChatColor.GREEN + "인벤토리에서 랜덤 아이템이 삭제되었습니다.");
     }
