@@ -239,7 +239,6 @@ public class DuService {
         List<Integer> slotsToCheck = new ArrayList<>();
 
         for (int i = 0; i <= 40; i++) {
-            plugin.getLogger().info("slotsToCheck: "+i);
             slotsToCheck.add(i);
         }
 
